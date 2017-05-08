@@ -141,5 +141,18 @@
 	</section>
 	<h1 id="heading">Orders</h1>
 	<section id="orders">nothing</section>
+
+	<script>
+		// Check that service workers are available
+		if ('serviceWorker' in navigator) {
+			console.log('ServiceWorker available in navigator');
+			
+			navigator.serviceWorker.register('/service_worker.js').then(function(reg) {
+				console.log('ServiceWorker registration successful with scope: ', reg.scope);
+			}).catch(function(err) {
+				console.log('ServiceWorker registration failed: ', err);
+			});
+		}
+	</script>
 </body>
 </html>
