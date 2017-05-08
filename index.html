@@ -14,7 +14,6 @@
 			height: 50px;
 			font-size: 16px;
 		}
-
 		input[type="radio"] {
 			opacity: 0.0;
 			width: 0px;
@@ -37,6 +36,13 @@
 			border: 1px solid gray;
 
 		}
+		#canned {
+			margin-top: 20px; 
+			display: flex;
+		}
+		#canned > button {
+			flex-grow: 1;
+		}
 	</style>
 
 	<script>
@@ -47,7 +53,6 @@
 			addon = getRadioValue("addon");
 			sweet = getRadioValue("sweet");
 			temp = getRadioValue("temp");
-			document.getElementsByName("base")[0].checked = true;
 
 			drink = base + "_" + addon + "_" + sweet + "_" + temp;
 			addDrink(drink)
@@ -116,6 +121,8 @@
 		<div>
 			<input type="radio" name="base" value="Teh" id="base_teh" checked><label for="base_teh">Teh</label>
 			<input type="radio" name="base" value="Kopi" id="base_kopi"><label for="base_kopi">Kopi</label>
+			<input type="radio" name="base" value="Yuan Yang" id="base_yuan_yang"><label for="base_yuan_yang">Yuan Yang</label>
+			<input type="radio" name="base" value="Milo" id="base_milo"><label for="base_milo">Milo</label>
 		</div>
 		<div>
 			<input type="radio" name="addon" value="Nothing" id="addon_nothing" checked><label for="addon_nothing">Nothing</label>
@@ -133,14 +140,16 @@
 			<input type="radio" name="temp" value="Peng" id="temp_peng"><label for="temp_peng">Peng</label>
 		</div>
 		<div>
-			<br />
-			<br />
-
 			<button onclick="javascript:add();" style="width:100%; height:80px; margin-top: 20px; background-color: green;">Add</button>
+		</div>
+		<div id="canned">
+			<button onclick="javascript:addDrink('Oolong');">Oolong</button>
+			<button onclick="javascript:addDrink('Jia Jia');">Jia Jia</button>
 		</div>
 	</section>
 	<h1 id="heading">Orders</h1>
 	<section id="orders">nothing</section>
+	<div id="cache_msg"/>
 
 	<script>
 		// Check that service workers are available
