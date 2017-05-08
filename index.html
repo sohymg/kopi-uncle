@@ -86,7 +86,7 @@
 
 		function createOrderNode(drink, count) {
 			node = document.createElement("button");
-			name = drink.replace(/_/g, " ").replace("Normal", "").replace("Hot", "");
+			name = drink.replace(/_/g, " ").replace(/Normal/g, "").replace(/Nothing/g, "").replace(/Hot/g, "");
 
 			node.innerHTML = name + " (" + count + ")";
 			node.onclick = function() { deleteOrderNode(drink); }
@@ -118,8 +118,10 @@
 			<input type="radio" name="base" value="Kopi" id="base_kopi"><label for="base_kopi">Kopi</label>
 		</div>
 		<div>
-			<input type="radio" name="addon" value="O" id="addon_o" checked><label for="addon_o">O</label>
+			<input type="radio" name="addon" value="Nothing" id="addon_nothing" checked><label for="addon_nothing">Nothing</label>
+			<input type="radio" name="addon" value="O" id="addon_o"><label for="addon_o">O</label>
 			<input type="radio" name="addon" value="Si" id="addon_si"><label for="addon_si">Si</label>
+			<input type="radio" name="addon" value="Halia" id="addon_halia"><label for="addon_halia">Halia</label>
 		</div>
 		<div>
 			<input type="radio" name="sweet" value="Normal" id="sweet_normal" checked><label for="sweet_normal">Normal</label>
