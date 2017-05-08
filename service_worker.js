@@ -20,8 +20,10 @@ self.addEventListener('fetch', function(event) {
   event.respondWith(
   	// match and serve cached asset if it exists
     caches.match(event.request).then(function(response) {
+      console.log(response)
       if (response) {
-        document.getElementById("cache_msg").innerHTML = "loaded from cache.";
+        console.log(document.getElementById("cache_msg"))
+        document.getElementById("cache_msg").innerHTML = "loaded from cache";
       }
 
       return response || fetch(event.request);
