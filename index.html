@@ -1,0 +1,134 @@
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+	<style>
+		div {
+			width: 100%;
+			display:flex;
+		}
+		button {
+			border: 1px solid black;
+			height: 50px;
+			font-size: 16px;
+		}
+
+		input[type="radio"] {
+			opacity: 0.0;
+			width: 0px;
+			margin: 0px;
+		}
+		label {
+			flex-grow: 1;
+			text-align: center;
+			line-height: 50px;
+		}
+		input[type="radio"] + label {
+		    display:inline-block;
+		    min-width:50px;
+		    height:50px;
+		    border: 1px solid transparent;
+		    background-color: #eee;
+		}
+		input[type="radio"]:checked + label {
+		    background-color: yellow;
+			border: 1px solid gray;
+
+		}
+	</style>
+
+	<script>
+		var orders = {};
+
+		function add() {
+			base = getRadioValue("base");
+			addon = getRadioValue("addon");
+			sweet = getRadioValue("sweet");
+			temp = getRadioValue("temp");
+			document.getElementsByName("base")[0].checked = true;
+
+			drink = base + "_" + addon + "_" + sweet + "_" + temp;
+			addDrink(drink)
+ 		}
+
+		function addDrink(drink) {
+			if (drink in orders === false) {
+				orders[drink] = 0;
+			}
+			orders[drink] += 1;
+
+			updateOrders(orders);
+		}
+
+		function updateOrders(orders) {
+			elem = document.getElementById("orders");
+			elem.innerHTML = "";
+
+			note = document.createElement("div");
+			note.innerHTML = "tap to decrement";
+			elem.appendChild(note);
+
+			Object.keys(orders).forEach(function(drink) {
+				if (orders[drink] == 0) {
+					return;
+				}
+
+				elem.appendChild(createOrderNode(drink, orders[drink]));
+			});
+		}
+
+		function createOrderNode(drink, count) {
+			node = document.createElement("button");
+			name = drink.replace(/_/g, " ").replace("Normal", "").replace("Hot", "");
+
+			node.innerHTML = name + " (" + count + ")";
+			node.onclick = function() { deleteOrderNode(drink); }
+			return node;
+		}
+
+		function deleteOrderNode(drink) {
+			orders[drink] -= 1;
+			updateOrders(orders);
+		}
+
+		function getRadioValue(name) {
+			var radios = document.getElementsByName(name);
+
+			for (var i = 0, length = radios.length; i < length; i++) {
+				if (radios[i].checked) {
+					return radios[i].value;
+				}
+			}
+
+			return ""
+		}
+	</script>
+</head>
+<body>
+	<section id="menu">
+		<div>
+			<input type="radio" name="base" value="Teh" id="base_teh" checked><label for="base_teh">Teh</label>
+			<input type="radio" name="base" value="Kopi" id="base_kopi"><label for="base_kopi">Kopi</label>
+		</div>
+		<div>
+			<input type="radio" name="addon" value="O" id="addon_o" checked><label for="addon_o">O</label>
+			<input type="radio" name="addon" value="Si" id="addon_si"><label for="addon_si">Si</label>
+		</div>
+		<div>
+			<input type="radio" name="sweet" value="Normal" id="sweet_normal" checked><label for="sweet_normal">Normal</label>
+			<input type="radio" name="sweet" value="Siew Dai" id="sweet_siew_dai"><label for="sweet_siew_dai">Siew Dai</label>
+			<input type="radio" name="sweet" value="Kosong" id="sweet_kosong"><label for="sweet_kosong">Kosong</label>
+		</div>
+		<div>
+			<input type="radio" name="temp" value="Hot" id="temp_hot" checked><label for="temp_hot">Hot</label>
+			<input type="radio" name="temp" value="Peng" id="temp_peng"><label for="temp_peng">Peng</label>
+		</div>
+		<div>
+			<br>
+			<button onclick="javascript:add();" style="width:100%; height:50px; background-color: green;">Add</button>
+		</div>
+	</section>
+	<h1>Orders</h1>
+	<section id="orders">nothing</section>
+</body>
+</html>
