@@ -19,6 +19,11 @@
 			width: 0px;
 			margin: 0px;
 		}
+		input[type="checkbox"] {
+			opacity: 0.0;
+			width: 0px;
+			margin: 0px;
+		}
 		label {
 			flex-grow: 1;
 			text-align: center;
@@ -33,6 +38,18 @@
 		}
 		input[type="radio"]:checked + label {
 		    background-color: yellow;
+			border: 1px solid gray;
+
+		}
+		input[type="checkbox"] + label {
+		    display:inline-block;
+		    min-width:50px;
+		    height:50px;
+		    border: 1px solid transparent;
+		    background-color: #ddd;
+		}
+		input[type="checkbox"]:checked + label {
+		    background-color: orange;
 			border: 1px solid gray;
 
 		}
@@ -51,10 +68,11 @@
 		function add() {
 			base = getRadioValue("base");
 			addon = getRadioValue("addon");
+			addon_halia = getCheckboxValue("addon_halia");
 			sweet = getRadioValue("sweet");
 			temp = getRadioValue("temp");
 
-			drink = base + "_" + addon + "_" + sweet + "_" + temp;
+			drink = base + "_" + addon + "_" + addon_halia + "_" + sweet + "_" + temp;
 			addDrink(drink)
  		}
 
@@ -114,6 +132,11 @@
 
 			return ""
 		}
+
+		function getCheckboxValue(id) {
+			elem = document.getElementById(id)
+			return elem.checked ? elem.value : ""
+		}
 	</script>
 </head>
 <body>
@@ -128,7 +151,7 @@
 			<input type="radio" name="addon" value="Nothing" id="addon_nothing" checked><label for="addon_nothing">Nothing</label>
 			<input type="radio" name="addon" value="O" id="addon_o"><label for="addon_o">O</label>
 			<input type="radio" name="addon" value="C" id="addon_c"><label for="addon_c">C</label>
-			<input type="radio" name="addon" value="Halia" id="addon_halia"><label for="addon_halia">Halia</label>
+			<input type="checkbox" value="Halia" id="addon_halia"><label for="addon_halia">Halia</label>
 		</div>
 		<div>
 			<input type="radio" name="sweet" value="Normal" id="sweet_normal" checked><label for="sweet_normal">Normal</label>
@@ -138,18 +161,21 @@
 		<div>
 			<input type="radio" name="temp" value="Hot" id="temp_hot" checked><label for="temp_hot">Hot</label>
 			<input type="radio" name="temp" value="Peng" id="temp_peng"><label for="temp_peng">Peng</label>
+			<input type="radio" name="temp" value="Pua Siow" id="temp_pua_siow"><label for="temp_pua_siow">Pua Siow</label>
+
 		</div>
 		<div>
-			<button onclick="javascript:add();" style="width:100%; height:80px; margin-top: 20px; background-color: green;">Add</button>
+			<button onclick="javascript:add();" style="width:100%; height:80px; margin-top: 20px; background-color: green; color: white;">Add</button>
 		</div>
 		<div id="canned">
 			<button onclick="javascript:addDrink('Oolong');">Oolong</button>
 			<button onclick="javascript:addDrink('Jia Jia');">Jia Jia</button>
+			<button onclick="javascript:addDrink('Ayakata');">Ayakata</button>
 		</div>
 	</section>
 	<h1 id="heading">Orders</h1>
 	<section id="orders">nothing</section>
-	
+
 	<script>
 		// Check that service workers are available
 		if ('serviceWorker' in navigator) {
