@@ -72,7 +72,15 @@
 		}
 		#canned > button {
 			flex-grow: 1;
-		}
+    }
+    
+    #custom_drink {
+      margin-top: 20px;
+      width: 100%;
+      height: 50px;
+      font-size: 16px;
+      border: 1px solid black;
+    }
 	</style>
 
 	<script>
@@ -96,7 +104,15 @@
 			orders[drink] += 1;
 
 			updateOrders(orders);
-		}
+    }
+    
+    function onkeyupCustomDrink(e) {
+      if (e.keyCode === 13) { // enter key
+        drink = document.getElementById('custom_drink').value.trim().toLowerCase();
+        addDrink(drink);
+        document.getElementById('custom_drink').blur();
+      }
+    }
 
 		function updateOrders(orders) {
 			elem = document.getElementById("orders");
@@ -175,7 +191,6 @@
 			<input type="radio" name="temp" value="Hot" id="temp_hot" checked><label for="temp_hot">Hot</label>
 			<input type="radio" name="temp" value="Peng" id="temp_peng"><label for="temp_peng">Peng</label>
 			<input type="radio" name="temp" value="Pua Siow" id="temp_pua_siow"><label for="temp_pua_siow">Pua Siow</label>
-
 		</div>
 		<div>
 			<button onclick="javascript:add();" style="width:100%; height:80px; margin-top: 20px; background-color: green; color: white;">Add</button>
@@ -185,7 +200,10 @@
 			<button onclick="javascript:addDrink('Jia Jia');">Jia Jia</button>
 			<button onclick="javascript:addDrink('Ayakata');">Ayakata</button>
 			<button onclick="javascript:addDrink('Oldenlandia (蛇草水)');">Oldenlandia (蛇草水)</button>
-		</div>
+    </div>
+    <div>
+      <input id='custom_drink' type="text" placeholder="Type custom drink. Press enter to add." onkeyup="javascript:onkeyupCustomDrink(event);"/>
+    </div>
 	</section>
 	<h1 id="heading">Orders</h1>
 	<section id="orders">nothing</section>
