@@ -90,6 +90,7 @@
       margin-top: 20px;
       margin-right: 8px;
       cursor: pointer;
+      display: none;
     }
 
     #clear_custom_drink > div {
@@ -132,7 +133,18 @@
     }
 
     function clearCustomDrink() {
-      drink = document.getElementById('custom_drink').value = "";
+      document.getElementById('custom_drink').value = "";
+      document.getElementById('custom_drink').focus();
+      return false;
+    }
+
+    function onfocusCustomDrink() {
+      document.getElementById('clear_custom_drink').style.display = "flex";
+    }
+
+    function onblurCustomDrink() {
+      document.getElementById('clear_custom_drink').style.display = "none";
+      return false;
     }
 
 		function updateOrders(orders) {
@@ -223,8 +235,8 @@
 			<button onclick="javascript:addDrink('Oldenlandia (蛇草水)');">Oldenlandia (蛇草水)</button>
     </div>
     <div>
-      <input id='custom_drink' type="text" placeholder="Type custom drink. Press enter to add." onkeyup="javascript:onkeyupCustomDrink(event);"/>
-      <div id='clear_custom_drink' onclick="javascript:clearCustomDrink();"><div>x</div></div>
+      <input id='custom_drink' type="text" placeholder="Type custom drink. Press enter to add." onkeyup="javascript:onkeyupCustomDrink(event);" onfocus="javascript:onfocusCustomDrink();" onblur="javascript:onblurCustomDrink();"/>
+      <div id='clear_custom_drink' onmousedown="return clearCustomDrink();"><div>x</div></div>
     </div>
 	</section>
 	<h1 id="heading">Orders</h1>
