@@ -48,11 +48,13 @@
 		    height:50px;
 		    border: 1px solid transparent;
 		    background-color: #eee;
-		}
+    }
+    input[type="radio"] + label.double {
+      line-height: 25px;
+    }
 		input[type="radio"]:checked + label {
 		    background-color: yellow;
-			border: 1px solid gray;
-
+			  border: 1px solid gray;
 		}
 		input[type="checkbox"] + label {
 		    display:inline-block;
@@ -60,11 +62,13 @@
 		    height:50px;
 		    border: 1px solid transparent;
 		    background-color: #ddd;
-		}
+    }
+    input[type="checkbox"] + label.double {
+      line-height: 25px;
+    }
 		input[type="checkbox"]:checked + label {
 		    background-color: orange;
-			border: 1px solid gray;
-
+			  border: 1px solid gray;
 		}
 		#canned {
 			margin-top: 20px; 
@@ -73,7 +77,6 @@
 		#canned > button {
 			flex-grow: 1;
     }
-    
     #custom_drink {
       margin-top: 20px;
       width: 100%;
@@ -81,7 +84,6 @@
       font-size: 16px;
       border: 1px solid black;
     }
-
     #clear_custom_drink {
       position: absolute;
       right: 0;
@@ -92,26 +94,38 @@
       cursor: pointer;
       display: none;
     }
-
     #clear_custom_drink > div {
       margin: auto;
       text-align: center;
       display: block;
       font-size: 24px;
     }
+    #orders .divider {
+      height: 10px;
+    }
 	</style>
 
 	<script>
 		var orders = {};
 
+    function onclickBase(base) {
+      if (base.htmlFor === "base_soya_bean") {
+        document.getElementById("addon_nothing").checked = true;
+        document.getElementById("addon_halia").checked = false;
+      } else {
+        document.getElementById("addon_grass_jelly").checked = false;
+      }
+    }
+
 		function add() {
 			base = getRadioValue("base");
 			addon = getRadioValue("addon");
-			addon_halia = getCheckboxValue("addon_halia");
+      addon_halia = getCheckboxValue("addon_halia");
+      addon_grass_jelly = getCheckboxValue("addon_grass_jelly");
 			sweet = getRadioValue("sweet");
 			temp = getRadioValue("temp");
 
-			drink = base + "_" + addon + "_" + addon_halia + "_" + sweet + "_" + temp;
+			drink = base + "_" + addon + "_" + addon_halia + "_" + addon_grass_jelly + "_" + sweet + "_" + temp;
 			addDrink(drink)
  		}
 
@@ -155,19 +169,32 @@
 			note.innerHTML = "tap to decrement";
 			elem.appendChild(note);
 
-			var total = 0;
-			Object.keys(orders).forEach(function(drink) {
+      var total = 0;
+      var lastDrinkType = null;
+			Object.keys(orders).sort().forEach(function(drink) {
 				if (orders[drink] == 0) {
 					return;
-				}
+        }
+        
+        drinkType = drink.split("_")[0];
+        if (lastDrinkType !== null & lastDrinkType !== drinkType) {
+          elem.appendChild(createOrderDividerNode());
+        }
+        lastDrinkType = drinkType;
 
 				total += orders[drink]
-				elem.appendChild(createOrderNode(drink, orders[drink]));
+        elem.appendChild(createOrderNode(drink, orders[drink]));
 			});
 
 			heading = document.getElementById("heading")
 			heading.innerHTML = "Orders (" + total + ")";
-		}
+    }
+    
+    function createOrderDividerNode() {
+      divider = document.createElement("div");
+      divider.className = "divider";
+      return divider;
+    }
 
 		function createOrderNode(drink, count) {
 			node = document.createElement("button");
@@ -204,21 +231,24 @@
 <body>
 	<section id="menu">
 		<div>
-			<input type="radio" name="base" value="Teh" id="base_teh" checked><label for="base_teh">Teh</label>
-			<input type="radio" name="base" value="Kopi" id="base_kopi"><label for="base_kopi">Kopi</label>
-			<input type="radio" name="base" value="Yuan Yang" id="base_yuan_yang"><label for="base_yuan_yang">Yuan Yang</label>
-			<input type="radio" name="base" value="Milo" id="base_milo"><label for="base_milo">Milo</label>
+			<input type="radio" name="base" value="Teh" id="base_teh" checked><label for="base_teh" onclick="javascript:onclickBase(this);">Teh</label>
+			<input type="radio" name="base" value="Kopi" id="base_kopi"><label for="base_kopi" onclick="javascript:onclickBase(this);">Kopi</label>
+			<input type="radio" name="base" value="Yuan Yang" id="base_yuan_yang"><label for="base_yuan_yang" class="double" onclick="javascript:onclickBase(this);">Yuan<br />Yang</label>
+      <input type="radio" name="base" value="Milo" id="base_milo"><label for="base_milo" onclick="javascript:onclickBase(this);">Milo</label>
+      <input type="radio" name="base" value="Soya Bean" id="base_soya_bean"><label for="base_soya_bean" class="double" onclick="javascript:onclickBase(this);">Soya<br />Bean</label>
 		</div>
 		<div>
 			<input type="radio" name="addon" value="Nothing" id="addon_nothing" checked><label for="addon_nothing">Nothing</label>
 			<input type="radio" name="addon" value="O" id="addon_o"><label for="addon_o">O</label>
 			<input type="radio" name="addon" value="C" id="addon_c"><label for="addon_c">C</label>
-			<input type="checkbox" value="Halia" id="addon_halia"><label for="addon_halia">Halia</label>
+      <input type="checkbox" value="Halia" id="addon_halia"><label for="addon_halia">Halia</label>
+      <input type="checkbox" value="Grass Jelly" id="addon_grass_jelly"><label for="addon_grass_jelly" class="double">Grass<br />Jelly</label>
 		</div>
 		<div>
-			<input type="radio" name="sweet" value="Normal" id="sweet_normal" checked><label for="sweet_normal">Normal</label>
+      <input type="radio" name="sweet" value="Normal" id="sweet_normal" checked><label for="sweet_normal">Normal</label>
+      <input type="radio" name="sweet" value="Kosong" id="sweet_kosong"><label for="sweet_kosong">Kosong</label>
 			<input type="radio" name="sweet" value="Siew Dai" id="sweet_siew_dai"><label for="sweet_siew_dai">Siew Dai</label>
-			<input type="radio" name="sweet" value="Kosong" id="sweet_kosong"><label for="sweet_kosong">Kosong</label>
+      <input type="radio" name="sweet" value="Ga Dai" id="sweet_ga_dai"><label for="sweet_ga_dai">Ga Dai</label>
 		</div>
 		<div>
 			<input type="radio" name="temp" value="Hot" id="temp_hot" checked><label for="temp_hot">Hot</label>
@@ -232,7 +262,7 @@
 			<button onclick="javascript:addDrink('Oolong');">Oolong</button>
 			<button onclick="javascript:addDrink('Jia Jia');">Jia Jia</button>
 			<button onclick="javascript:addDrink('Ayakata');">Ayakata</button>
-			<button onclick="javascript:addDrink('Oldenlandia (蛇草水)');">Oldenlandia (蛇草水)</button>
+			<button onclick="javascript:addDrink('Oldenlandia (蛇草水)');">Oldenlandia<br />(蛇草水)</button>
     </div>
     <div>
       <input id='custom_drink' type="text" placeholder="Type custom drink. Press enter to add." onkeyup="javascript:onkeyupCustomDrink(event);" onfocus="javascript:onfocusCustomDrink();" onblur="javascript:onblurCustomDrink();"/>
